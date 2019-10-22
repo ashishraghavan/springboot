@@ -7,8 +7,8 @@ import java.util.Objects;
 public class Player {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long playerId;
 
     @Column
     private String firstName;
@@ -20,7 +20,17 @@ public class Player {
     private String name;
 
     @Column
-    private String teamName;
+    private String country;
+
+    Player(){}
+
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -39,19 +49,19 @@ public class Player {
     }
 
     public String getName() {
-        return name;
+        return this.firstName + " "+this.lastName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = this.firstName + " " + this.lastName;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public String getCountry() {
+        return country;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override
@@ -59,12 +69,12 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return id.equals(player.id) &&
+        return playerId.equals(player.playerId) &&
                 name.equals(player.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(playerId, name);
     }
 }
