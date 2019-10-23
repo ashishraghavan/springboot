@@ -1,17 +1,16 @@
 package org.ashish.springboot.practice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
+//@Table(name = "team",uniqueConstraints = @UniqueConstraint(columnNames = {"teamId"}))
 @Entity
+@Table(name = "team")
 public class Team {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long teamId;
 
     @Column
     private String fullName;
@@ -57,12 +56,16 @@ public class Team {
         this.shortName = shortName;
     }
 
+    public Long getTeamId() {
+        return teamId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return id.equals(team.id) &&
+        return teamId.equals(team.teamId) &&
                 fullName.equals(team.fullName) &&
                 city.equals(team.city) &&
                 Objects.equals(nickName, team.nickName) &&
@@ -71,6 +74,6 @@ public class Team {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, city, nickName, shortName);
+        return Objects.hash(teamId, fullName, city, nickName, shortName);
     }
 }

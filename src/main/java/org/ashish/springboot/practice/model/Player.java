@@ -3,7 +3,10 @@ package org.ashish.springboot.practice.model;
 import javax.persistence.*;
 import java.util.Objects;
 
+//@Table(name = "player",uniqueConstraints = @UniqueConstraint(columnNames = {"playerId","name"}))
+//uniqueConstraints = {@UniqueConstraint(columnNames = "name",name = "uniqueNameConstraint")}
 @Entity
+@Table(name = "player",indexes = { @Index(name = "uniquename", columnList = "name") })
 public class Player {
 
     @Id
@@ -16,7 +19,7 @@ public class Player {
     @Column
     private String lastName;
 
-    @Column(unique = true)
+    @Column(nullable = false,length = 100,unique = true)
     private String name;
 
     @Column

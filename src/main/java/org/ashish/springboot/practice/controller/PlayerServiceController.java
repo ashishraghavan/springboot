@@ -49,4 +49,6 @@ public class PlayerServiceController extends BaseController {
             return new ResponseEntity("Bad request while fetching players by country with message "+e.getCause().getLocalizedMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+
+    
 }
