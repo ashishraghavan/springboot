@@ -5,8 +5,9 @@ import java.util.Objects;
 
 //@Table(name = "player",uniqueConstraints = @UniqueConstraint(columnNames = {"playerId","name"}))
 //uniqueConstraints = {@UniqueConstraint(columnNames = "name",name = "uniqueNameConstraint")}
+//,indexes = { @Index(name = "uniquename", columnList = "name") }
 @Entity
-@Table(name = "player",indexes = { @Index(name = "uniquename", columnList = "name") })
+@Table(name = "player")
 public class Player {
 
     @Id
