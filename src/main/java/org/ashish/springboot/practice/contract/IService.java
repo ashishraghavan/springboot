@@ -5,14 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public interface IService {
     OkHttpClient client = new OkHttpClient();
-    /*Logger serviceLogger =
-    Set<Character> escapeMapKeys = ImmutableSet.<Character>builder().add(Character.MIN_VALUE,'$','&','@','/','?','+').build();
+    Logger serviceLogger = LoggerFactory.getLogger(IService.class.getSimpleName());
+    /*Set<Character> escapeMapKeys = ImmutableSet.<Character>builder().add(Character.MIN_VALUE,'$','&','@','/','?','+').build();
     Map<Character,String> escapeMap = ImmutableMap.<Character,String>builder()
             .put(Character.MIN_VALUE,"%20")
             .put('$',"%24")

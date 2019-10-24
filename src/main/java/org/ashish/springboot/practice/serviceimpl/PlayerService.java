@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import okhttp3.Response;
 import org.ashish.springboot.practice.contract.IPlayerService;
 import org.ashish.springboot.practice.model.Player;
+import org.ashish.springboot.practice.repository.NbaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.Map;
 
 @Service
 public class PlayerService implements IPlayerService {
+
+    @Autowired
+    private NbaRepository nbaRepository;
 
     /**
      *
@@ -29,6 +34,24 @@ public class PlayerService implements IPlayerService {
         //TODO : again, encode country for spaces and other reserved characters.
         String url = String.format(playerNamesByCountryUrl, country);
         return respond(url);
+    }
+
+    @Override
+    public Player createPlayer(String firstName, String lastName, String country) {
+        Player player = nbaRepository.save(new Player(firstName,lastName,country));
+        return player;
+    }
+
+    public Player createPlayer(String jsonPlayer) {
+        Player player = null;
+        try {
+            player = mapper.readValue(jsonPlayer,Player.class);
+            //persist in DB.
+            player = nbaRepository.save(player);
+        } catch (Exception e) {
+            serviceLogger.error("There was an error reading the JSON value with exception "+e.getLocalizedMessage());
+        }
+        return player;
     }
 
     @SuppressWarnings("unchecked")

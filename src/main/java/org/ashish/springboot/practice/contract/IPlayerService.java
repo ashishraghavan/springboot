@@ -12,4 +12,6 @@ public interface IPlayerService extends IService {
             .get()
             .addHeader(X_RAPID_API_HEADER_HOST_KEY, X_RAPID_API_HEADER_HOST_VALUE)
             .addHeader(X_RAPID_API_HEADER_KEY_KEY, X_RAPID_API_HEADER_KEY_VALUE);
+
+    Player createPlayer(String firstName,String lastName,String country);
 }

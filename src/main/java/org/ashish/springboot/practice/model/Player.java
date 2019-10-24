@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Player {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playerId;
 
     @Column
@@ -26,7 +26,14 @@ public class Player {
     @Column
     private String country;
 
-    Player(){}
+    public Player(){}
+
+    public Player(String firstName,String lastName,String country) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.name = this.firstName + " "+this.lastName;
+        this.country=country;
+    }
 
     public Long getPlayerId() {
         return playerId;

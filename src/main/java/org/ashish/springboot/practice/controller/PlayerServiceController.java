@@ -4,12 +4,10 @@ import org.ashish.springboot.practice.model.Player;
 import org.ashish.springboot.practice.serviceimpl.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,5 +48,21 @@ public class PlayerServiceController extends BaseController {
         }
     }
 
-    
+    @ResponseBody
+    @PostMapping(path = "/create",produces = "application/json",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Player> createPlayer(@RequestParam(name = "first_name") String firstName,
+                                               @RequestParam(name = "last_name") String lastName,
+                                               @RequestParam(name = "country") String country) {
+        return new ResponseEntity<>(playerService.createPlayer(firstName,lastName,country),HttpStatus.CREATED);
+    }
+
+    @ResponseBody
+    @PostMapping(path = "/create/json",produces = "application/json",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Player> createPlayer(@RequestBody String playerJson) {
+        Player createdPlayer = playerService.createPlayer(playerJson);
+        if(createdPlayer == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(createdPlayer,HttpStatus.CREATED);
+    }
 }
