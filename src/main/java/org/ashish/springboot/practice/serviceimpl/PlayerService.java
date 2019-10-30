@@ -6,10 +6,17 @@ import org.ashish.springboot.practice.contract.IPlayerService;
 import org.ashish.springboot.practice.model.Player;
 import org.ashish.springboot.practice.repository.NbaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PlayerService implements IPlayerService {
@@ -38,8 +45,18 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public Player createPlayer(String firstName, String lastName, String country) {
-        Player player = nbaRepository.save(new Player(firstName,lastName,country));
-        return player;
+        return nbaRepository.save(new Player(firstName,lastName,country));
+    }
+
+    @Override
+    public Player getPlayerById(Long id) throws Exception {
+        Optional<Player> optionalPlayer = nbaRepository.findById(id);
+        if(!optionalPlayer.isPresent()) {
+            serviceLogger.error("There was an error getting the player with id "+id);
+            //TODO An exception should be thrown or the appropriate response object should be returned instead of returning null.
+            return null;
+        }
+        return optionalPlayer.get();
     }
 
     public Player createPlayer(String jsonPlayer) {
@@ -72,5 +89,7 @@ public class PlayerService implements IPlayerService {
         }
         return playerList;
     }
+
+
 }
 

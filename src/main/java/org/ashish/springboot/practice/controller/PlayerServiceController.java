@@ -1,5 +1,6 @@
 package org.ashish.springboot.practice.controller;
 
+import org.ashish.springboot.practice.exception.BootException;
 import org.ashish.springboot.practice.model.Player;
 import org.ashish.springboot.practice.serviceimpl.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,16 @@ public class PlayerServiceController extends BaseController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(createdPlayer,HttpStatus.CREATED);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getPlayerById(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(playerService.getPlayerById(Long.valueOf(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            serviceLogger.error("There was an error getting player by id with exception "+e.getLocalizedMessage());
+            return new ResponseEntity(new BootException(e,HttpStatus.BAD_REQUEST.value()),HttpStatus.BAD_REQUEST);
+        }
     }
 }
