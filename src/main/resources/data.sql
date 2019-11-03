@@ -1,0 +1,2 @@
+insert into player(first_name,last_name,name,country) values ('Sushant','Shivprasad','Sushant Shivprasad','India');
+insert into player(first_name,last_name,name,country) values ('Ashish','Raghavan','Ashish Raghavan','India');
