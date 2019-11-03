@@ -20,6 +20,12 @@ public class PlayerServiceController extends BaseController {
     private PlayerService playerService;
 
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,path="/test")
+    @ResponseBody
+    public ResponseEntity<String> testPlayerController() {
+        return new ResponseEntity<>("API works!",HttpStatus.OK);
+    }
+
     @SuppressWarnings("unchecked")
     @GetMapping(produces = "application/json",path = "/lastname/{playerName}")
     @ResponseBody
