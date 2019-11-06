@@ -1,5 +1,6 @@
 package org.ashish.springboot.practice;
 
+import org.junit.Ignore;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import org.testng.util.Strings;
  * We are using TestNG because it simplifies running tests in
  * order rather than running each test case independently.
  */
-@Test
 public class PlayerServiceTest extends BaseTest{
 
     @LocalServerPort
@@ -33,6 +33,7 @@ public class PlayerServiceTest extends BaseTest{
         testLogger.info("Web service initialized on port "+port);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPortValidity")
     void testPlayerController() {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:"+port+"/players/test",String.class);
@@ -41,5 +42,10 @@ public class PlayerServiceTest extends BaseTest{
         Assert.assertFalse(Strings.isNullOrEmpty(responseBody));
         testLogger.info("Response from test API call : "+responseBody);
         Assert.assertEquals(responseBody, "API works!");
+    }
+
+    @Test(dependsOnMethods = "testPortValidity")
+    void testCreatePlayer() {
+        //{\"firstName\":\"LeBron\",\"lastName\":\"James\",\"name\":\"LeBron James\",\"country\":\"USA\"}
     }
 }
