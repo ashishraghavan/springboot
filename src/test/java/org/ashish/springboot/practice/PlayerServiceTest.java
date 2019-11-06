@@ -1,5 +1,9 @@
 package org.ashish.springboot.practice;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.*;
+import org.ashish.springboot.practice.model.Player;
 import org.junit.Ignore;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -21,12 +25,16 @@ import org.testng.util.Strings;
  * We are using TestNG because it simplifies running tests in
  * order rather than running each test case independently.
  */
+@Test
 public class PlayerServiceTest extends BaseTest{
 
     @LocalServerPort
     private int port;
 
     TestRestTemplate restTemplate = new TestRestTemplate();
+    final ObjectMapper resultMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES,false)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    final OkHttpClient client = new OkHttpClient();
 
     @Test
     void testPortValidity() {
@@ -45,7 +53,18 @@ public class PlayerServiceTest extends BaseTest{
     }
 
     @Test(dependsOnMethods = "testPortValidity")
-    void testCreatePlayer() {
-        //{\"firstName\":\"LeBron\",\"lastName\":\"James\",\"name\":\"LeBron James\",\"country\":\"USA\"}
+    void testCreatePlayer() throws Exception {
+        Request request = new Request.Builder()
+                .url("http://localhost:"+port+"/players/create/json")
+                .post(RequestBody.create(MediaType.parse("application/json"),"{\"firstName\":\"LeBron\",\"lastName\":\"James\",\"name\":\"LeBron James\",\"country\":\"USA\"}"))
+                .build();
+        Response response = client.newCall(request).execute();
+        Assert.assertTrue(response.isSuccessful());
+        ResponseBody responseBody = response.body();
+        Assert.assertNotNull(responseBody);
+        String responseBodyStr = responseBody.string();
+        Assert.assertFalse(Strings.isNullOrEmpty(responseBodyStr));
+        Player createdPlayer = resultMapper.readValue(responseBodyStr,Player.class);
+        Assert.assertNotNull(createdPlayer);
     }
 }
